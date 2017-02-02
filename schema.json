@@ -1,0 +1,155 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Genera Data",
+  "description": "A data specification for Museum Victoria Genera system",
+
+  "definitions": {
+    "image": {
+      "type": "object",
+      "properties": {
+      "filename": { "description": "image filename" },
+      "credit": { "description": "image credit " },
+      "description": { "description": "image description" },
+      "licenseType": { "description": "image licence" }, 
+      "alternateText": { "description": "accessibility alt text" }              }
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "title": "Speci Data",
+      "description": "Array of speci",
+      "items": {
+        "type": "object",
+        "properties": {
+          "identifier": {"description": "external identifier" },
+          "label": {"description": "Item name" },
+          "sublabel": {"description": "Item sublabel" }, 
+          "sublabelStyle": {"description": "normal” or “italic" }, 
+          "tertiaryLabel": {"description": "Item tertiarylabel" }, 
+          "tertiaryLabelStyle": { "enum": [ "normal", "italic", "" ], "description": "normal or italic" }, 
+          "searchText": {"description": "search text" }, 
+          "squareThumbnail": { "description": "thumbnail filename" }, 
+          "group": { "description": "group.label" },
+          "subgroup": { "description": "subgroup name" }, 
+          "subgroupID": { "description": "subgroup ID" }, 
+          "template": { "description": "template.templateName" }, 
+          "images": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/image" }
+          },
+          "audio": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "filename": { "description": "audio filename" }, 
+                "credit": { "description": "audio credit" }, 
+                "description": { "description": "audio description " },
+                "licenseType": { "description": "audio license" }, 
+                "alternateText": { "description": "accessibility alt text" }
+              }
+            }
+          },
+          "details": {
+            "patternProperties": {
+              ".*": {}
+            }
+          }
+        }
+      }
+    },
+    "groupList": {
+      "type": "array",
+      "title": "Group List",
+      "description": "An array of Group",
+      "minItems": 1,
+      "items": { 
+        "type": "object",
+        "required": ["supergroupID", "label", "sublabel", "order", "groupID", "standardImage", "highlightedImage"],
+        "properties": { 
+          "supergroupID":     { "type": "string", "pattern": "^[0-9]+$" },
+          "label":            { "type": "string" },
+          "subLabel":         { "type": "string" },
+          "order":            { "type": "string", "pattern": "^[0-9]+$" },
+          "groupID":          { "type": "string", "pattern": "^[0-9]+$" },
+          "standardImage":    { "type": "string" },
+          "highlightedImage": { "type": "string" }
+        }
+      },
+      "uniqueItems": true
+    },  
+    "supergroupList": {
+      "type": "array",
+      "title": "Supergroup List",
+      "description": "An array of Supergroups",
+      "minItems": 1,
+      "items": { 
+        "type": "object",
+        "required": ["supergroupID", "label", "order"],
+        "properties": { 
+          "supergroupID": { "type": "string", "pattern": "^[0-9]+$" },
+          "label":        { "type": "string" },
+          "order":        { "type": "string", "pattern": "^[0-9]+$" }
+        }
+      },
+      "uniqueItems": true
+    },  
+    "subgroupList": {
+      "type": "array",
+      "title": "Subgroup List",
+      "description": "An array of subgroups",
+      "minItems": 1,
+      "items": { 
+        "type": "object",
+        "properties": { 
+          "groupID":    { "type": "string", "pattern": "^[0-9]+$" },
+          "label":      { "type": "string" },
+          "subgroupID": { "type": "string", "pattern": "^[0-9]+$" },
+          "sublabel":   { "type": "string" }
+        }
+      },
+      "uniqueItems": true
+    },  
+    "templateList": {
+      "type": "array",
+      "title": "Template List",
+      "description": "An aray of templates used to control layout", 
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "templateName": {}, 
+          "tabletTemplate": {}, 
+          "mobileTabs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tabName": {},
+                "tabLabel": {},
+                "tabIcon": {}, 
+                "tabTemplate": {}
+              }
+            }
+          }          
+        }
+      }
+    },
+    "galleryImages": {
+      "type": "array",
+      "title": "Gallery Images",
+      "description": "An array of images used for the gallery feature",
+      "items": { "$ref": "#/definitions/image" }
+    },
+    "versionID": {
+      "type": "string",
+      "pattern": "^[0-9]+$",
+      "title": "Version ID",
+      "description": "Integer Version ID encoded as a string"
+    }
+  },
+  "required": ["supergroupList","groupList", "galleryImages", "versionID"]
+}
