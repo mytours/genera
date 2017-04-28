@@ -1,0 +1,10 @@
+ext {
+    appId = "io.genera.myapp"
+    versionCode = 1
+    versionName = "1.0"
+
+    playLicenseKey = "PLAY_LICENSE_KEY_FROM_PLAY_STORE"
+
+    // enable firebase crash reporting if the app/google-services.json file exists
+    crashReporting = new File('app/google-services.json').exists();
+}
